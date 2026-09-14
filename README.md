@@ -5,6 +5,7 @@ ELL8299 / COL8383 / COL873: Trustworthy Large Language Models
 Assignment 1 | Semester I, 2026-27
 
 Repository: [adeemharis/LLM_Privacy](https://github.com/adeemharis/LLM_Privacy)
+Adapters - https://drive.google.com/file/d/1UFh0cbNH1jYzbzzZU9ElNL89z2fAaOM-/view?usp=sharing
 
 Part A compares the six specified LoRA/QLoRA configurations for a
 Qwen2.5-1.5B-Instruct PII sanitizer. Part B evaluates the selected A4 sanitizer
@@ -101,6 +102,8 @@ Span alignment and metrics are in `src/metrics.py`; baselines are in
 `src/baselines.py`; aggregation and plots are in `src/collect_results.py`.
 
 ## Private artifacts and limitations
+
+Adapter Zip - Adapters zip can be found at - https://drive.google.com/file/d/1UFh0cbNH1jYzbzzZU9ElNL89z2fAaOM-/view?usp=sharing
 
 Extract the separate private adapter archive and its nested ZIPs into the
 project root. The weight files belong at
