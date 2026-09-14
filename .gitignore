@@ -1,0 +1,20 @@
+# Track only the source, report and reviewed aggregate results.
+/*
+!/.gitignore
+!/README.md
+!/requirements.txt
+!/run_all.sh
+!/report.pdf
+!/src/
+/src/*
+!/src/*.py
+!/results/
+/results/*
+!/results/partA_sweep.csv
+!/results/partA_fig.png
+!/results/partB_metrics.json
+!/results/partC_attacks.json
+!/results/partC_exposure.png
+
+__pycache__/
+*.py[cod]

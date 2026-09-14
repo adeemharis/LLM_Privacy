@@ -1,0 +1,14 @@
+torch==2.8.0
+transformers==4.56.2
+peft==0.17.1
+accelerate==1.10.1
+bitsandbytes==0.47.0
+numpy==2.2.6
+matplotlib==3.10.6
+tqdm==4.67.1
+presidio-analyzer==2.2.359
+spacy==3.8.7
+click==8.1.8
+typer==0.16.0
+typer-slim==0.16.0
+https://github.com/explosion/spacy-models/releases/download/en_core_web_lg-3.8.0/en_core_web_lg-3.8.0-py3-none-any.whl

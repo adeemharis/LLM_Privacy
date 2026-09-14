@@ -1,0 +1,482 @@
+{
+  "victim": "victim_raw",
+  "settings": {
+    "victim_model": "Qwen/Qwen2.5-0.5B",
+    "ref_model": "Qwen/Qwen2.5-0.5B",
+    "attack": "all",
+    "num_samples": 5000,
+    "seed": 42,
+    "batch_size": 32,
+    "score_batch_size": 64,
+    "prefix_tokens": 50,
+    "suffix_tokens": 50,
+    "membership_window": 50,
+    "untargeted_tokens": 256,
+    "targeted_tokens": 64
+  },
+  "heldout_ppl": 8.331646472171474,
+  "heldout_likelihood": {
+    "mean_nll": 2.1200610923702987,
+    "ppl": 8.331646472171474,
+    "nll_sum": 138774.958984375,
+    "n_tokens": 65458,
+    "n_documents": 500
+  },
+  "discoverable": {
+    "n_documents": 3520,
+    "n_excluded_short": 1480,
+    "exact_match_rate": 0.0011363636363636363,
+    "mean_edit_sim": 0.39072588396708885,
+    "by_n_reps": {
+      "2": {
+        "n": 49,
+        "exact_match_rate": 0.0
+      },
+      "8": {
+        "n": 45,
+        "exact_match_rate": 0.022222222222222223
+      },
+      "32": {
+        "n": 47,
+        "exact_match_rate": 0.0425531914893617
+      },
+      "1": {
+        "n": 3379,
+        "exact_match_rate": 0.0002959455460195324
+      }
+    }
+  },
+  "untargeted": {
+    "n_generated": 5000,
+    "n_unique": 4991,
+    "precision_at_100": {
+      "ppl": 0.29,
+      "ratio_ref": 0.0,
+      "ratio_lower": 0.01,
+      "ratio_zlib": 0.12
+    },
+    "precision_at_100_original_raw": {
+      "ppl": 0.29,
+      "ratio_ref": 0.0,
+      "ratio_lower": 0.01,
+      "ratio_zlib": 0.12
+    },
+    "distinct_docs_recovered": 19,
+    "distinct_pii_values_recovered": null,
+    "pii_recovery_rate": null,
+    "n_distinct_pii_values": null,
+    "pii_index_status": "MISSING: result unavailable, not zero"
+  },
+  "canary": {
+    "n_canaries": 20,
+    "mean_exposure": 3.868024293254792,
+    "by_n_reps": {
+      "1": {
+        "n": 5,
+        "mean_exposure": 1.9895988591334575
+      },
+      "4": {
+        "n": 5,
+        "mean_exposure": 2.329127430388676
+      },
+      "16": {
+        "n": 5,
+        "mean_exposure": 2.2957606816387393
+      },
+      "64": {
+        "n": 5,
+        "mean_exposure": 8.857610201858297
+      }
+    },
+    "sampled_estimator_ceiling_bits": 13.287712379549449
+  },
+  "targeted": {
+    "n_member": 200,
+    "n_control": 200,
+    "member": {
+      "greedy_leak_rate": 0.075,
+      "sampled_any10_leak_rate": 0.075
+    },
+    "control": {
+      "greedy_leak_rate": 0.045,
+      "sampled_any10_leak_rate": 0.095
+    },
+    "excluding_gold_in_prompt": {
+      "member": {
+        "n": 199,
+        "greedy_leak_rate": 0.07537688442211055,
+        "sampled_any10_leak_rate": 0.07537688442211055
+      },
+      "control": {
+        "n": 197,
+        "greedy_leak_rate": 0.03553299492385787,
+        "sampled_any10_leak_rate": 0.08629441624365482
+      }
+    },
+    "n_gold_already_in_prompt": 4
+  },
+  "total_wallclock_s": 6553.931194619,
+  "within_180_minute_limit": true,
+  "comparisons": {
+    "base": {
+      "victim": "V-base",
+      "settings": {
+        "victim_model": "Qwen/Qwen2.5-0.5B",
+        "ref_model": "Qwen/Qwen2.5-0.5B",
+        "attack": "all",
+        "num_samples": 5000,
+        "seed": 42,
+        "batch_size": 32,
+        "score_batch_size": 64,
+        "prefix_tokens": 50,
+        "suffix_tokens": 50,
+        "membership_window": 50,
+        "untargeted_tokens": 256,
+        "targeted_tokens": 64
+      },
+      "heldout_ppl": 15.210533494087723,
+      "heldout_likelihood": {
+        "mean_nll": 2.721988180875523,
+        "ppl": 15.210533494087723,
+        "nll_sum": 178175.90234375,
+        "n_tokens": 65458,
+        "n_documents": 500
+      },
+      "discoverable": {
+        "n_documents": 3520,
+        "n_excluded_short": 1480,
+        "exact_match_rate": 0.0,
+        "mean_edit_sim": 0.2703358383385992,
+        "by_n_reps": {
+          "2": {
+            "n": 49,
+            "exact_match_rate": 0.0
+          },
+          "8": {
+            "n": 45,
+            "exact_match_rate": 0.0
+          },
+          "32": {
+            "n": 47,
+            "exact_match_rate": 0.0
+          },
+          "1": {
+            "n": 3379,
+            "exact_match_rate": 0.0
+          }
+        }
+      },
+      "untargeted": {
+        "n_generated": 5000,
+        "n_unique": 5000,
+        "precision_at_100": {
+          "ppl": 0.0,
+          "ratio_ref": 0.0,
+          "ratio_lower": 0.0,
+          "ratio_zlib": 0.0
+        },
+        "precision_at_100_original_raw": {
+          "ppl": 0.0,
+          "ratio_ref": 0.0,
+          "ratio_lower": 0.0,
+          "ratio_zlib": 0.0
+        },
+        "distinct_docs_recovered": 0,
+        "distinct_pii_values_recovered": null,
+        "pii_recovery_rate": null,
+        "n_distinct_pii_values": null,
+        "pii_index_status": "MISSING: result unavailable, not zero"
+      },
+      "canary": {
+        "n_canaries": 20,
+        "mean_exposure": 1.5349843710570872,
+        "by_n_reps": {
+          "1": {
+            "n": 5,
+            "mean_exposure": 1.1317528262541985
+          },
+          "4": {
+            "n": 5,
+            "mean_exposure": 2.1458176927683965
+          },
+          "16": {
+            "n": 5,
+            "mean_exposure": 0.8980975649983236
+          },
+          "64": {
+            "n": 5,
+            "mean_exposure": 1.9642694002074301
+          }
+        },
+        "sampled_estimator_ceiling_bits": 13.287712379549449
+      },
+      "targeted": {
+        "n_member": 200,
+        "n_control": 200,
+        "member": {
+          "greedy_leak_rate": 0.005,
+          "sampled_any10_leak_rate": 0.015
+        },
+        "control": {
+          "greedy_leak_rate": 0.03,
+          "sampled_any10_leak_rate": 0.085
+        },
+        "excluding_gold_in_prompt": {
+          "member": {
+            "n": 199,
+            "greedy_leak_rate": 0.0,
+            "sampled_any10_leak_rate": 0.010050251256281407
+          },
+          "control": {
+            "n": 197,
+            "greedy_leak_rate": 0.015228426395939087,
+            "sampled_any10_leak_rate": 0.07106598984771574
+          }
+        },
+        "n_gold_already_in_prompt": 4
+      },
+      "total_wallclock_s": 3302.62946595,
+      "within_180_minute_limit": true
+    },
+    "raw": {
+      "victim": "victim_raw",
+      "settings": {
+        "victim_model": "Qwen/Qwen2.5-0.5B",
+        "ref_model": "Qwen/Qwen2.5-0.5B",
+        "attack": "all",
+        "num_samples": 5000,
+        "seed": 42,
+        "batch_size": 32,
+        "score_batch_size": 64,
+        "prefix_tokens": 50,
+        "suffix_tokens": 50,
+        "membership_window": 50,
+        "untargeted_tokens": 256,
+        "targeted_tokens": 64
+      },
+      "heldout_ppl": 8.331646472171474,
+      "heldout_likelihood": {
+        "mean_nll": 2.1200610923702987,
+        "ppl": 8.331646472171474,
+        "nll_sum": 138774.958984375,
+        "n_tokens": 65458,
+        "n_documents": 500
+      },
+      "discoverable": {
+        "n_documents": 3520,
+        "n_excluded_short": 1480,
+        "exact_match_rate": 0.0011363636363636363,
+        "mean_edit_sim": 0.39072588396708885,
+        "by_n_reps": {
+          "2": {
+            "n": 49,
+            "exact_match_rate": 0.0
+          },
+          "8": {
+            "n": 45,
+            "exact_match_rate": 0.022222222222222223
+          },
+          "32": {
+            "n": 47,
+            "exact_match_rate": 0.0425531914893617
+          },
+          "1": {
+            "n": 3379,
+            "exact_match_rate": 0.0002959455460195324
+          }
+        }
+      },
+      "untargeted": {
+        "n_generated": 5000,
+        "n_unique": 4991,
+        "precision_at_100": {
+          "ppl": 0.29,
+          "ratio_ref": 0.0,
+          "ratio_lower": 0.01,
+          "ratio_zlib": 0.12
+        },
+        "precision_at_100_original_raw": {
+          "ppl": 0.29,
+          "ratio_ref": 0.0,
+          "ratio_lower": 0.01,
+          "ratio_zlib": 0.12
+        },
+        "distinct_docs_recovered": 19,
+        "distinct_pii_values_recovered": null,
+        "pii_recovery_rate": null,
+        "n_distinct_pii_values": null,
+        "pii_index_status": "MISSING: result unavailable, not zero"
+      },
+      "canary": {
+        "n_canaries": 20,
+        "mean_exposure": 3.868024293254792,
+        "by_n_reps": {
+          "1": {
+            "n": 5,
+            "mean_exposure": 1.9895988591334575
+          },
+          "4": {
+            "n": 5,
+            "mean_exposure": 2.329127430388676
+          },
+          "16": {
+            "n": 5,
+            "mean_exposure": 2.2957606816387393
+          },
+          "64": {
+            "n": 5,
+            "mean_exposure": 8.857610201858297
+          }
+        },
+        "sampled_estimator_ceiling_bits": 13.287712379549449
+      },
+      "targeted": {
+        "n_member": 200,
+        "n_control": 200,
+        "member": {
+          "greedy_leak_rate": 0.075,
+          "sampled_any10_leak_rate": 0.075
+        },
+        "control": {
+          "greedy_leak_rate": 0.045,
+          "sampled_any10_leak_rate": 0.095
+        },
+        "excluding_gold_in_prompt": {
+          "member": {
+            "n": 199,
+            "greedy_leak_rate": 0.07537688442211055,
+            "sampled_any10_leak_rate": 0.07537688442211055
+          },
+          "control": {
+            "n": 197,
+            "greedy_leak_rate": 0.03553299492385787,
+            "sampled_any10_leak_rate": 0.08629441624365482
+          }
+        },
+        "n_gold_already_in_prompt": 4
+      },
+      "total_wallclock_s": 6553.931194619,
+      "within_180_minute_limit": true
+    },
+    "san": {
+      "victim": "victim_san",
+      "settings": {
+        "victim_model": "Qwen/Qwen2.5-0.5B",
+        "ref_model": "Qwen/Qwen2.5-0.5B",
+        "attack": "all",
+        "num_samples": 5000,
+        "seed": 42,
+        "batch_size": 32,
+        "score_batch_size": 64,
+        "prefix_tokens": 50,
+        "suffix_tokens": 50,
+        "membership_window": 50,
+        "untargeted_tokens": 256,
+        "targeted_tokens": 64
+      },
+      "heldout_ppl": 13.3985888868344,
+      "heldout_likelihood": {
+        "mean_nll": 2.5951493944590425,
+        "ppl": 13.3985888868344,
+        "nll_sum": 169873.2890625,
+        "n_tokens": 65458,
+        "n_documents": 500
+      },
+      "discoverable": {
+        "n_documents": 3520,
+        "n_excluded_short": 1480,
+        "exact_match_rate": 0.0008522727272727272,
+        "mean_edit_sim": 0.3258774334912416,
+        "by_n_reps": {
+          "2": {
+            "n": 49,
+            "exact_match_rate": 0.0
+          },
+          "8": {
+            "n": 45,
+            "exact_match_rate": 0.044444444444444446
+          },
+          "32": {
+            "n": 47,
+            "exact_match_rate": 0.0
+          },
+          "1": {
+            "n": 3379,
+            "exact_match_rate": 0.0002959455460195324
+          }
+        }
+      },
+      "untargeted": {
+        "n_generated": 5000,
+        "n_unique": 4848,
+        "precision_at_100": {
+          "ppl": 0.35,
+          "ratio_ref": 0.16,
+          "ratio_lower": 0.03,
+          "ratio_zlib": 0.51
+        },
+        "precision_at_100_original_raw": {
+          "ppl": 0.14,
+          "ratio_ref": 0.08,
+          "ratio_lower": 0.0,
+          "ratio_zlib": 0.23
+        },
+        "distinct_docs_recovered": 22,
+        "distinct_pii_values_recovered": null,
+        "pii_recovery_rate": null,
+        "n_distinct_pii_values": null,
+        "pii_index_status": "MISSING: result unavailable, not zero"
+      },
+      "canary": {
+        "n_canaries": 20,
+        "mean_exposure": 0.8423337393965188,
+        "by_n_reps": {
+          "1": {
+            "n": 5,
+            "mean_exposure": 0.6527685871216896
+          },
+          "4": {
+            "n": 5,
+            "mean_exposure": 0.36055334500095954
+          },
+          "16": {
+            "n": 5,
+            "mean_exposure": 1.6613138342293872
+          },
+          "64": {
+            "n": 5,
+            "mean_exposure": 0.6946991912340387
+          }
+        },
+        "sampled_estimator_ceiling_bits": 13.287712379549449
+      },
+      "targeted": {
+        "n_member": 200,
+        "n_control": 200,
+        "member": {
+          "greedy_leak_rate": 0.01,
+          "sampled_any10_leak_rate": 0.015
+        },
+        "control": {
+          "greedy_leak_rate": 0.04,
+          "sampled_any10_leak_rate": 0.055
+        },
+        "excluding_gold_in_prompt": {
+          "member": {
+            "n": 199,
+            "greedy_leak_rate": 0.010050251256281407,
+            "sampled_any10_leak_rate": 0.01507537688442211
+          },
+          "control": {
+            "n": 197,
+            "greedy_leak_rate": 0.030456852791878174,
+            "sampled_any10_leak_rate": 0.04060913705583756
+          }
+        },
+        "n_gold_already_in_prompt": 4
+      },
+      "total_wallclock_s": 5418.693248752,
+      "within_180_minute_limit": true
+    }
+  }
+}
