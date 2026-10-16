@@ -5,7 +5,11 @@ ELL8299 / COL8383 / COL873: Trustworthy Large Language Models
 Assignment 1 | Semester I, 2026-27
 
 Repository: [adeemharis/LLM_Privacy](https://github.com/adeemharis/LLM_Privacy)
+
 Adapters - https://drive.google.com/file/d/1UFh0cbNH1jYzbzzZU9ElNL89z2fAaOM-/view?usp=sharing
+
+Adapters at Hugging Face - https://huggingface.co/adeemharis/LLM_Privacy_Adapters
+Victim Adapters at Hugging Face - https://huggingface.co/adeemharis/LLM_Privacy_Victim_Adapters
 
 Part A compares the six specified LoRA/QLoRA configurations for a
 Qwen2.5-1.5B-Instruct PII sanitizer. Part B evaluates the selected A4 sanitizer
@@ -118,3 +122,53 @@ as `null`. If the official index is provided, replace that flag with
 `--pii_index /path/to/partC_pii_index.jsonl`. Only one qualifying traced example
 was found, and it is weak evidence of training-specific leakage. Evaluation
 time overruns are detailed in the report.
+
+## Hugging Face adapters (public sanitizer + protected victim adapters)
+
+The downloader uses a public Hugging Face model repository for Part A sanitizer
+adapters (`A1`-`A6` and `best_sanitizer`) and a separate victim-adapter repository
+for `victim_raw` and `victim_san`. The victim repository is **private by default**
+because the original Assignment 1 PDF prohibits publicly distributing Part C
+victim models and extraction outputs. If course staff explicitly confirms that
+the later announcement overrides this rule, the publisher has a separately
+guarded public-victim option.
+
+Before publishing, edit `DEFAULT_SANITIZER_REPO_ID` and `DEFAULT_VICTIM_REPO_ID`
+in `src/hf_adapters.py` to your actual Hugging Face repository IDs (or set the
+`A1_HF_SANITIZER_REPO` and `A1_HF_VICTIM_REPO` environment variables). The public
+sanitizer ID must be committed into the code so evaluators can download it without
+setting environment variables. Base model weights continue to be fetched by
+Transformers from the pinned Hugging Face model revisions in `src/modeling.py`.
+
+Install the Hub client and authenticate only for publishing:
+
+```bash
+python -m pip install -r requirements.txt
+hf auth login
+```
+
+Your adapter ZIP directory can be published directly; archives are read without
+extracting arbitrary ZIP paths:
+
+```bash
+python src/hf_adapters.py publish \
+  --source-dir "/path/to/2026JCS2024_adapters" \
+  --sanitizer-repo-id YOUR_HF_USERNAME/LLM_Privacy_Adapters \
+  --victim-repo-id YOUR_HF_USERNAME/LLM_Privacy_Victim_Adapters
+```
+
+This publishes `A1`-`A6` and `best_sanitizer` publicly, while `victim_raw` and
+`victim_san` go to a private repository. Do not use the public-victim flags unless
+course staff explicitly confirms that the original restriction no longer applies.
+
+`run_all.sh` downloads the public `best_sanitizer` to
+`adapters_dir/hf_downloaded/best_sanitizer` before Part B evaluation or Part C
+sanitization. This path is separate from Part A training folders, so training does
+not overwrite the downloaded adapter. The `attacks` stage first uses complete
+local victim adapters and otherwise downloads them into `hf_downloaded/`; private
+victim downloads require access to that private HF repo. A complete `all` run
+trains the victim adapters locally before running attacks.
+
+The adapter downloader is also called by the standalone Part B evaluator, Part C
+sanitizer, and attack CLI if the requested adapter folder is incomplete.
+

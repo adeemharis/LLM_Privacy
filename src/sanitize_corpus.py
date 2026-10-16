@@ -6,10 +6,12 @@ try:
     from .common import digest, read_jsonl, seed_everything, write_json, write_jsonl
     from .modeling import Sanitizer, adapter_quant
     from .progress import Journal
+    from .hf_adapters import ensure_adapter, is_complete_adapter
 except ImportError:
     from common import digest, read_jsonl, seed_everything, write_json, write_jsonl
     from modeling import Sanitizer, adapter_quant
     from progress import Journal
+    from hf_adapters import ensure_adapter, is_complete_adapter
 
 
 def main():
@@ -24,6 +26,8 @@ def main():
     parser.add_argument("--resume", action="store_true")
     args = parser.parse_args()
     seed_everything(args.seed)
+    if not is_complete_adapter("best_sanitizer", Path(args.adapter_path)):
+        ensure_adapter("best_sanitizer", args.adapter_path)
     rows = read_jsonl(args.corpus)
     if len(rows) != 8007:
         raise ValueError("Expected all 8,007 physical training rows.")

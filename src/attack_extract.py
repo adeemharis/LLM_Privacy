@@ -18,12 +18,14 @@ try:
                            generate_ids, load_model, load_tokenizer, per_example_nll, cached_continuation_nll, MODEL_REVISIONS)
     from .progress import Journal
     from .pii_scoring import recovery_metrics, finish_pii_scoring
+    from .hf_adapters import ensure_adapter, is_complete_adapter, VICTIM_ADAPTERS
 except ImportError:
     from common import contains_value, digest, normalize, read_jsonl, seed_everything, unique_documents, write_json
     from modeling import (autocast, causal_nll_sum, collate, encode_document, evaluate_loss,
                           generate_ids, load_model, load_tokenizer, per_example_nll, cached_continuation_nll, MODEL_REVISIONS)
     from progress import Journal
     from pii_scoring import recovery_metrics, finish_pii_scoring
+    from hf_adapters import ensure_adapter, is_complete_adapter, VICTIM_ADAPTERS
 
 
 def membership_scores(text, victim_nll, reference_nll, lowercase_nll):
@@ -392,6 +394,12 @@ def main():
     args = parser.parse_args()
     if args.victim_model != "Qwen/Qwen2.5-0.5B" or args.ref_model != args.victim_model:
         parser.error("Only the specified local base model and its assignment adapters are supported.")
+    if args.adapter_path:
+        adapter_name = Path(args.adapter_path).name
+        if adapter_name in VICTIM_ADAPTERS and not is_complete_adapter(adapter_name, args.adapter_path):
+            ensure_adapter(adapter_name, args.adapter_path)
+        elif adapter_name not in VICTIM_ADAPTERS:
+            parser.error("--adapter_path must point to a victim_raw or victim_san adapter directory.")
     if args.num_samples != 5000 and args.attack in {"all", "untargeted"}:
         parser.error("The assignment requires exactly 5,000 generated samples.")
     pii_index = None

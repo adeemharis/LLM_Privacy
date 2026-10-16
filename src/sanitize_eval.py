@@ -7,10 +7,12 @@ try:
     from .baselines import PresidioBaseline, regex_sanitize
     from .common import read_jsonl, seed_everything, write_json, write_jsonl, digest
     from .metrics import Metrics
+    from .hf_adapters import ensure_adapter, is_complete_adapter
 except ImportError:
     from baselines import PresidioBaseline, regex_sanitize
     from common import read_jsonl, seed_everything, write_json, write_jsonl, digest
     from metrics import Metrics
+    from hf_adapters import ensure_adapter, is_complete_adapter
 
 
 def evaluate(args):
@@ -39,6 +41,8 @@ def evaluate(args):
         adapter = args.adapter_path if args.system == "finetuned" else None
         if args.system == "finetuned" and not adapter:
             raise ValueError("--adapter_path is required for the finetuned system.")
+        if args.system == "finetuned" and not is_complete_adapter("best_sanitizer", Path(adapter)):
+            adapter = ensure_adapter("best_sanitizer", adapter)
         quant = adapter_quant(adapter) if args.quant == "auto" else args.quant
         identity = {"input_sha256": digest(args.test_file), "model": args.base_model,
                     "model_revision": MODEL_REVISIONS.get(args.base_model), "prompt": SYSTEM_PROMPT,

@@ -10,9 +10,11 @@ import sys
 try:
     from .common import ALL_MODULES, ROOT, SWEEP, verify_bundle, write_json
     from .collect_results import collect_part_b, collect_part_c, plot_part_a, plot_part_c
+    from .hf_adapters import ensure_adapter, is_complete_adapter
 except ImportError:
     from common import ALL_MODULES, ROOT, SWEEP, verify_bundle, write_json
     from collect_results import collect_part_b, collect_part_c, plot_part_a, plot_part_c
+    from hf_adapters import ensure_adapter, is_complete_adapter
 
 
 SETTINGS = {
@@ -108,21 +110,26 @@ def main():
         select_best(results, adapters)
         plot_part_a(results)
     if stage in {"B", "all"}:
-        if not (adapters / "best_sanitizer/adapter_model.safetensors").is_file():
-            select_best(results, adapters)
+        # Download to a dedicated folder: never overlap A1-A6 or best_sanitizer training outputs.
+        inference_adapter = ensure_adapter(
+            "best_sanitizer", adapters / "hf_downloaded" / "best_sanitizer"
+        )
         for system in ("finetuned", "regex", "presidio"):
             for suffix, filename in (("", "partB_test.jsonl"), ("_ood", "partB_ood_test.jsonl")):
                 primary = system == "finetuned" and not suffix
                 predictions = results / "partB_predictions.jsonl" if primary else work / f"partB{suffix}_{system}_predictions.jsonl"
                 run("sanitize_eval.py", "--test_file", data / filename, "--system", system,
-                    "--adapter_path", adapters / "best_sanitizer", "--output_predictions", predictions,
+                    "--adapter_path", inference_adapter, "--output_predictions", predictions,
                     "--report_file", evaluations / f"partB{suffix}_{system}_metrics.json",
                     "--batch_size", SETTINGS["generation_batch_size"], "--max_new_tokens", SETTINGS["max_new_tokens"],
                     "--seed", SETTINGS["seed"], "--device", "cuda" if system == "finetuned" else "cpu", *resume)
         collect_part_b(evaluations, results, adapters, data)
     if stage in {"sanitize", "all"}:
+        inference_adapter = ensure_adapter(
+            "best_sanitizer", adapters / "hf_downloaded" / "best_sanitizer"
+        )
         run("sanitize_corpus.py", "--corpus", data / "partC_corpus_raw.jsonl", "--output_file", sanitized,
-            "--adapter_path", adapters / "best_sanitizer", "--batch_size", SETTINGS["generation_batch_size"],
+            "--adapter_path", inference_adapter, "--batch_size", SETTINGS["generation_batch_size"],
             "--max_new_tokens", SETTINGS["max_new_tokens"], "--seed", SETTINGS["seed"], *resume)
     if stage in {"victims", "all"}:
         if not sanitized.is_file():
@@ -138,7 +145,17 @@ def main():
             raise FileNotFoundError("The sanitized corpus is needed to score V-san training membership.")
         deferred = ["--allow_missing_pii_index"] if not pii.is_file() else []
         for name in ("base", "raw", "san"):
-            adapter = [] if name == "base" else ["--adapter_path", adapters / f"victim_{name}"]
+            if name == "base":
+                adapter = []
+            else:
+                local_adapter = adapters / f"victim_{name}"
+                if is_complete_adapter(f"victim_{name}", local_adapter):
+                    attack_adapter = local_adapter
+                else:
+                    attack_adapter = ensure_adapter(
+                        f"victim_{name}", adapters / "hf_downloaded" / f"victim_{name}"
+                    )
+                adapter = ["--adapter_path", attack_adapter]
             run("attack_extract.py", "--corpus", data / "partC_corpus_raw.jsonl",
                 "--training_corpus", sanitized if name == "san" else data / "partC_corpus_raw.jsonl",
                 "--heldout", data / "partC_heldout.jsonl", "--canaries", data / "partC_canaries.jsonl",
