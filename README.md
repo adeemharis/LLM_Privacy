@@ -127,39 +127,7 @@ time overruns are detailed in the report.
 
 The downloader uses a public Hugging Face model repository for Part A sanitizer
 adapters (`A1`-`A6` and `best_sanitizer`) and a separate victim-adapter repository
-for `victim_raw` and `victim_san`. The victim repository is **private by default**
-because the original Assignment 1 PDF prohibits publicly distributing Part C
-victim models and extraction outputs. If course staff explicitly confirms that
-the later announcement overrides this rule, the publisher has a separately
-guarded public-victim option.
-
-Before publishing, edit `DEFAULT_SANITIZER_REPO_ID` and `DEFAULT_VICTIM_REPO_ID`
-in `src/hf_adapters.py` to your actual Hugging Face repository IDs (or set the
-`A1_HF_SANITIZER_REPO` and `A1_HF_VICTIM_REPO` environment variables). The public
-sanitizer ID must be committed into the code so evaluators can download it without
-setting environment variables. Base model weights continue to be fetched by
-Transformers from the pinned Hugging Face model revisions in `src/modeling.py`.
-
-Install the Hub client and authenticate only for publishing:
-
-```bash
-python -m pip install -r requirements.txt
-hf auth login
-```
-
-Your adapter ZIP directory can be published directly; archives are read without
-extracting arbitrary ZIP paths:
-
-```bash
-python src/hf_adapters.py publish \
-  --source-dir "/path/to/2026JCS2024_adapters" \
-  --sanitizer-repo-id YOUR_HF_USERNAME/LLM_Privacy_Adapters \
-  --victim-repo-id YOUR_HF_USERNAME/LLM_Privacy_Victim_Adapters
-```
-
-This publishes `A1`-`A6` and `best_sanitizer` publicly, while `victim_raw` and
-`victim_san` go to a private repository. Do not use the public-victim flags unless
-course staff explicitly confirms that the original restriction no longer applies.
+for `victim_raw` and `victim_san`. 
 
 `run_all.sh` downloads the public `best_sanitizer` to
 `adapters_dir/hf_downloaded/best_sanitizer` before Part B evaluation or Part C
